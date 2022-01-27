@@ -1,0 +1,110 @@
+Create tables for the above list given:
+1. Created tables for Users, mentors, courses, topics, tasks and company drives
+
+CREATE TABLE users(Id integer PRIMARY KEY, Name text);
+CREATE TABLE codekata(Id integer PRIMARY KEY, Problem_Name text);
+CREATE TABLE attendance(Id integer PRIMARY KEY, Session_Name text, User_Id integer);
+CREATE TABLE mentors(Id integer PRIMARY KEY, Mentor_Name text);
+CREATE TABLE courses(Id integer PRIMARY KEY, Course_Name text);
+CREATE TABLE topics(Id integer PRIMARY KEY, topics text, courses integer);
+CREATE TABLE tasks(Id integer PRIMARY KEY, tasks text, topics integer);
+CREATE TABLE company_drives(Id integer PRIMARY KEY, company text);
+
+Created mapping tables
+
+CREATE TABLE users_codekata(Id integer PRIMARY KEY, User_ID integer, Codekata_Topic integer, Total_Problems_Solved integer);
+CREATE TABLE users_company_drive(Id integer PRIMARY KEY, User_ID integer, Company_ID integer);
+CREATE TABLE users_mentors(Id integer PRIMARY KEY, USER_Id integer, Mentor_ID integer);
+CREATE TABLE students_activated_courses(Id integer PRIMARY KEY, USER_Id integer, Course_Id integer);
+
+2. Insert at least 5 rows of values in each table
+Created few records in our tables
+
+INSERT INTO users VALUES(1,'Manasa');
+INSERT INTO users VALUES(2,'Priya');
+INSERT INTO users VALUES(3,'Avni');
+INSERT INTO users VALUES(4,'Anu');
+INSERT INTO users VALUES(5,'Pragna');
+INSERT INTO codekata VALUES(1,'ZEN');
+INSERT INTO codekata VALUES(2,'Numbers');
+INSERT INTO codekata VALUES(3,'Array');
+INSERT INTO codekata VALUES(4,'String');
+INSERT INTO codekata VALUES(5,'Sorting');
+
+INSERT INTO mentors VALUES(1,'Ragav');
+INSERT INTO mentors VALUES(2,'Saimohan');
+INSERT INTO mentors VALUES(3,'Sena');
+INSERT INTO mentors VALUES(4,'Lavish');
+INSERT INTO mentors VALUES(5,'Suman');
+
+INSERT INTO courses VALUES(1,'MERN Stack');
+INSERT INTO courses VALUES(2,'Data Science');
+INSERT INTO courses VALUES(3,'Java');
+INSERT INTO courses VALUES(4,'AI & ML');
+INSERT INTO courses VALUES(5,'Java J2EE');
+
+INSERT INTO topics VALUES(1,'HTML', 1);
+INSERT INTO topics VALUES(2,'Javascript', 1);
+INSERT INTO topics VALUES(3,'ReactJS', 1);
+INSERT INTO topics VALUES(4,'Node', 3);
+INSERT INTO topics VALUES(5,'AWS', 4);
+INSERT INTO topics VALUES(6,'Java', 5);
+INSERT INTO topics VALUES(7,'CSS', 2);
+
+INSERT INTO tasks VALUES(1,'Stack overflow clone', 1);
+INSERT INTO tasks VALUES(2,'Youtube clone', 2);
+INSERT INTO tasks VALUES(3,'Food ordering app', 3);
+INSERT INTO tasks VALUES(4,'Shopping Cart', 3);
+INSERT INTO tasks VALUES(5,'Book my show clone', 5);
+INSERT INTO tasks VALUES(6,'Attendance portal', 6);
+INSERT INTO tasks VALUES(7,'Task portal', 4);
+INSERT INTO tasks VALUES(8,'CRUD movie list', 7);
+
+INSERT INTO company_drives VALUES(1,'Infosys');
+INSERT INTO company_drives VALUES(2,'Techmahindra');
+INSERT INTO company_drives VALUES(3,'TCS');
+INSERT INTO company_drives VALUES(4,'HCL');
+INSERT INTO company_drives VALUES(5,'HP');
+
+INSERT INTO users_codekata VALUES(1, 1 ,1, 25);
+INSERT INTO users_codekata VALUES(2,2, 3, 11);
+INSERT INTO users_codekata VALUES(3,3, 4, 37);
+INSERT INTO users_codekata VALUES(4,3, 3, 31);
+INSERT INTO users_codekata VALUES(5,4, 1, 56);
+INSERT INTO users_codekata VALUES(6,4, 3, 23);
+INSERT INTO users_codekata VALUES(7,4, 2, 34);
+INSERT INTO users_codekata VALUES(8,5, 5, 32);
+
+INSERT INTO users_company_drive VALUES(1, 1 ,1);
+INSERT INTO users_company_drive VALUES(2,2, 3);
+INSERT INTO users_company_drive VALUES(3,3, 4);
+INSERT INTO users_company_drive VALUES(4,3, 3);
+INSERT INTO users_company_drive VALUES(5,4, 2);
+INSERT INTO users_company_drive VALUES(6,5, 5);
+
+INSERT INTO users_mentors VALUES(1, 1 ,1);
+INSERT INTO users_mentors VALUES(2,2, 1);
+INSERT INTO users_mentors VALUES(3,3, 2);
+INSERT INTO users_mentors VALUES(4,4, 1);
+INSERT INTO users_mentors VALUES(5,5, 5);
+
+INSERT INTO students_activated_courses VALUES(1, 1 ,1);
+INSERT INTO students_activated_courses VALUES(2,2, 1);
+INSERT INTO students_activated_courses VALUES(3,3, 2);
+INSERT INTO students_activated_courses VALUES(4,4, 4);
+INSERT INTO students_activated_courses VALUES(5,5, 5);
+
+3. Get number problems solved in codekata by combining the users
+SELECT SUM(Total_Problems_Solved) FROM users_codekata;
+
+4. Display the no of company drives attended by a user
+SELECT COUNT(Company_ID) FROM users LEFT JOIN users_company_drive ON users.Id = User_ID WHERE Name LIKE "Manasa";
+
+5. Combine and display students_activated_courses and courses for a specific user grouping them based on the course
+SELECT Course_Name, COUNT(Name) FROM users INNER JOIN (SELECT * FROM courses INNER JOIN students_activated_courses ON courses.Id = Course_Id) ON users.Id = USER_Id GROUP BY Course_Name;
+
+6. List all the mentors
+SELECT * FROM mentors;
+
+7. list the number of students that are assigned for a mentor
+SELECT Mentor_Name, COUNT(USER_Id) FROM mentors INNER JOIN users_mentors ON mentors.Id = Mentor_ID GROUP BY Mentor_Name;
