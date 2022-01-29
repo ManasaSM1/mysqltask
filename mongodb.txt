@@ -1,0 +1,4 @@
+db.movies.deleteOne({"rating":8.6})
+
+db.movies.update({"id":"102"},{"$set":
+{"rating":9.2}})
